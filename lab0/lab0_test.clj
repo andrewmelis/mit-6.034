@@ -12,3 +12,9 @@
   (is (= 120 (lab0/factorial 5)))
   (is (thrown? AssertionError (lab0/factorial 0)))
   (is (thrown? AssertionError (lab0/factorial -1))))
+
+(deftest count-pattern-tests
+  (is (= 2 (lab0/count-pattern '(2 3) '(1 2 3 2 3 4 3 4 5))))
+  (is (= 1 (lab0/count-pattern '(1 '(2 3)) '(1 '(2 3) 2 3 1 '(2 3 4)))))
+  (is (= 2 (lab0/count-pattern '(:a :b) '(:a :b :c :e :b :a :b :f))))
+  (is (= 3 (lab0/count-pattern '(:a :b :a) '(:g :a :b :a :b :a :b :a)))))
