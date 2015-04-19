@@ -20,3 +20,6 @@
             (not (seq? exp))) 0
         (not (seq? (first exp))) (depth (rest exp))
         :else (inc (max (depth (first exp)) (depth (rest exp))))))
+
+(defn tree-ref [tree coll]
+  (reduce #(nth %1 %2) tree coll))

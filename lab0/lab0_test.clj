@@ -24,3 +24,8 @@
   (is (= 1 (lab0/depth '((lab0/expt x 2)))))
   (is (= 2 (lab0/depth '(+ (lab0/expt x 2) (lab0/expt y 2)))))
   (is (= 4 (lab0/depth '(/ (lab0/expt x 5) (lab0/expt (- (lab0/expt x 2) 1) (/ 5 2)))))))
+
+(deftest tree-ref-tests
+  (def tree [[[1 2] 3] 7 [4 [5 6]] [8 9 10]])
+  (is (= 9 (lab0/tree-ref tree '(3 1))))
+  (is (= [[1 2] 3] (lab0/tree-ref tree '(0)))))
