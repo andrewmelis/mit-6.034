@@ -1,6 +1,6 @@
-(ns lab0-test
+(ns lab0.solutions-test
   (:require [clojure.test :refer :all]
-            [lab0 :as lab0]))
+            [lab0.solutions :as lab0]))
 
 (deftest cube-tests
   (is (= 1000 (lab0/cube 10)))
@@ -18,3 +18,9 @@
   (is (= 1 (lab0/count-pattern '(1 '(2 3)) '(1 '(2 3) 2 3 1 '(2 3 4)))))
   (is (= 2 (lab0/count-pattern '(:a :b) '(:a :b :c :e :b :a :b :f))))
   (is (= 3 (lab0/count-pattern '(:a :b :a) '(:g :a :b :a :b :a :b :a)))))
+
+(deftest expression-depth-tests
+  (is (= 0 (lab0/depth '(x))))
+  (is (= 1 (lab0/depth '((lab0/expt x 2)))))
+  (is (= 2 (lab0/depth '(+ (lab0/expt x 2) (lab0/expt y 2)))))
+  (is (= 4 (lab0/depth '(/ (lab0/expt x 5) (lab0/expt (- (lab0/expt x 2) 1) (/ 5 2)))))))
