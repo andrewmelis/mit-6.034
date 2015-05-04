@@ -23,3 +23,28 @@
 
 (defn tree-ref [tree coll]
   (reduce #(nth %1 %2) tree coll))
+
+(defn key-collision? [coll]
+  (->> (map keys coll)
+      flatten
+      (apply (complement distinct?))))
+
+(declare match)
+
+(defn match-list [pattern datum]
+  (let [results
+        (->> (interleave pattern datum)
+             (partition 2)
+             (map #(match (first %) (last %)))
+             flatten
+             distinct)]
+    (cond (some false? results) false
+          (key-collision? results) false
+          :else (apply merge results))))
+
+(defn match [pattern datum]
+  (cond (= pattern datum) {}
+        (= :_ pattern) {}
+        (keyword? pattern) {pattern datum}
+        (every? sequential? [pattern datum]) (match-list pattern datum)
+        :else false))

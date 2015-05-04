@@ -29,3 +29,23 @@
   (def tree [[[1 2] 3] 7 [4 [5 6]] [8 9 10]])
   (is (= 9 (lab0/tree-ref tree '(3 1))))
   (is (= [[1 2] 3] (lab0/tree-ref tree '(0)))))
+
+(deftest t-pattern-matching
+  (testing "2006 version of lab0 has this problem in Scheme"
+    (is (= {} (lab0/match '() '())))
+    (is (= {} (lab0/match 'a 'a)))
+    (is (false? (lab0/match 'a 'b)))
+    (is (false? (lab0/match '(1 2) '(1 3))))
+    (is (= {:x 'b} (lab0/match :x 'b)))
+    (is (= {:x 'b} (lab0/match '(a :x c) '(a b c))))
+    (is (= {:x 'b} (lab0/match '(a (:x c) d) '(a (b c) d))))
+    (is (= {:x 'b :y 'c} (lab0/match '(a (:x c) :y) '(a (b c) c))))
+    (is (= {} (lab0/match '(a (b c) d) '(a (b c) d))))
+    (is (= {:x '()} (lab0/match '(a :x d) '(a () d))))
+    (is (false? (lab0/match '(a :x d) '(a b c e))))
+    (is (= {:x 'b} (lab0/match '(a :x c :x e) '(a b c b e))))
+    (is (false? (lab0/match '(a :x c :x e) '(a b c d e))))
+    (is (= {} (lab0/match '(a :_ c :_ e) '(a b c b e))))
+    (is (= {} (lab0/match '(a :_ c :_ e) '(a b c d e))))
+    (is (= {:x 'f} (lab0/match '(a :_ c :_ e :x) '(a b c d e f))))))
+
