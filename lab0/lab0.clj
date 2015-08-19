@@ -43,8 +43,23 @@
           :else (apply merge results))))
 
 (defn match [pattern datum]
-  (cond (= pattern datum) {}
-        (= :_ pattern) {}
-        (keyword? pattern) {pattern datum}
-        (every? sequential? [pattern datum]) (match-list pattern datum)
-        :else false))
+  (letfn [key-collision [coll]
+          (->> (map keys coll)
+               flatten
+               (apply (complement distinct?)))
+
+          match-list [pattern datum]
+          (let [results
+                (->> (interleave pattern datum)
+                     (partition 2)
+                     (map #(match (first %) (last %)))
+                     flatten
+                     distinct)]
+            (cond (some false? results) false
+                  (key-collision? results) false
+                  :else (apply merge results)))]
+    (cond (= pattern datum) {}
+          (= :_ pattern) {}
+          (keyword? pattern) {pattern datum}
+          (every? sequential? [pattern datum])(match-list pattern datum)
+          :else false)))
